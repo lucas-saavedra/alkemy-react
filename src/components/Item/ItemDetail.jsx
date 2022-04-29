@@ -1,9 +1,12 @@
 
-import AddtoMenuBtn from './AddtoMenuBtn';
+import AddtoMenuBtn from '../Buttons/AddtoMenuBtn';
 import { MdOutlineAccessAlarm, MdCheckCircleOutline, MdOutlineHealthAndSafety } from "react-icons/md";
 import { GiWheat } from "react-icons/gi";
-import roundPrice from '../../utils/roundPrice.util';
-
+import { Row } from 'react-bootstrap';
+import PageNotFound from '../DisplayMessage/DisplayMessage';
+const tagStyles = {
+    className: "bg-warning p-1 m-1 rounded bg-opacity-75",
+}
 const ItemDetail = ({ item }) => {
     const {
         image,
@@ -16,27 +19,37 @@ const ItemDetail = ({ item }) => {
     } = item;
 
     return (
-        <>
-            <div className="row" >
-                <div className="col-md-6 col-xs-2">
-                    <div className='d-flex justify-content-center align-items-center w-100 h-100'>
-                        <img src={image} style={{ objectFit: 'cover' }} className="w-100 h-100 rounded" alt="..."></img>
-                    </div>
-                </div>
-                <div className="col-md-6 justify-content-start align-items-center">
-                    <div>
-                        <h3 className="h3">{title}</h3>
-                        <p className="lead"><MdOutlineHealthAndSafety /> Healthscore {healthScore}%</p>
-                        <p className="lead"><MdOutlineAccessAlarm /> Ready in {readyInMinutes} minutes</p>
-                        <p className="lead"> {vegan && true && (<> <MdCheckCircleOutline /> Vegan</>)} </p>
-                        <p className="lead"> {vegetarian && true && (<><MdCheckCircleOutline /> Vegetarian</>)} </p>
-                        <p className="lead"> {glutenFree && true && (<><GiWheat /> Gluten free</>)} </p>
-                        <h3 className>$ {roundPrice(pricePerServing)}  <span className="lead">per serving</span> </h3>
-                        <AddtoMenuBtn item={item} />
-                    </div>
-                </div>
-            </div>
-        </>
+
+        <Row>
+            {!item ? (<PageNotFound msg='An error has appeared, please try again.' />) :
+                (
+                    <>
+                        <div className="col-md-6 col-xs-2">
+                            <div className='d-flex justify-content-center align-items-center w-100 h-100'>
+                                <img src={image} style={{ objectFit: 'cover' }} className="w-100 h-100 rounded" alt={title}></img>
+                            </div>
+                        </div>
+                        <div className="col-md-6 d-flex flex-column justify-content-between align-items-start">
+                            <h3 className="h3 pt-1">{title}</h3>
+                            <div className=' h-100 d-flex flex-column justify-content-between align-items-start'>
+                                <div className="d-flex flex-wrap">
+                                    <p {...tagStyles} ><MdOutlineHealthAndSafety /> Healthscore {healthScore}%</p>
+                                    <p {...tagStyles} ><MdOutlineAccessAlarm /> Ready in {readyInMinutes} minutes</p>
+                                    {vegan && true && (<p {...tagStyles}> <> <MdCheckCircleOutline /> Vegan</> </p>)}
+                                    {vegetarian && true && (<p {...tagStyles}> <><MdCheckCircleOutline /> Vegetarian</> </p>)}
+                                    {glutenFree && true && (<p {...tagStyles}><><GiWheat /> Gluten free</></p>)}
+                                </div>
+                            </div>
+
+                            <div className='d-block'>
+                                <h3 className='h3 pt-2'>$ {pricePerServing} <span className="lead">per serving</span> </h3>
+                                <AddtoMenuBtn item={item} />
+                            </div>
+                        </div>
+                    </>
+                )
+            }
+        </Row>
 
     )
 }

@@ -1,17 +1,17 @@
 
-import { Login } from "./components/Login";
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import * as ROUTES from './constants/routes'
-import Home from "./components/Home";
-import Search from "./components/Search/Search";
+import Home from "./components/Menu/Home";
+/* import Search from "./components/Search/Search"; */
 import NavBar from "./components/NavBar/NavBar";
 import { MenuProvider } from "./context/menuContext";
-import PageNotFound from "./components/PageNotFound/PageNotFound";
+import PageNotFound from "./components/DisplayMessage/DisplayMessage";
 import useToken from "./hooks/useToken";
+import Login from "./components/Login/Login";
+import SearchListContainer from './components/Search/Container';
 
 function App() {
-
 
   const { token, setToken } = useToken();
   if (!token) {
@@ -19,22 +19,19 @@ function App() {
   }
 
   return (
-    <div className="h-100">
-      <MenuProvider>
-        <BrowserRouter>
-          <Suspense fallback={<p>Loading...</p>}>
-            <NavBar />
-            <Routes>
-              <Route exact path={ROUTES.MENU} element={<Home />} />
-              <Route exact path={ROUTES.SEARCH} element={<Search />} />
-              <Route exact path={ROUTES.NOT_FOUND} element={<PageNotFound />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </MenuProvider>
-    </div>
 
-
+    <MenuProvider>
+      <BrowserRouter>
+        <Suspense fallback={<p>Loading...</p>}>
+          <NavBar />
+          <Routes>
+            <Route exact path={ROUTES.MENU} element={<Home />} />
+            <Route exact path={ROUTES.SEARCH} element={<SearchListContainer />} />
+            <Route exact path={ROUTES.NOT_FOUND} element={<PageNotFound />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </MenuProvider>
 
   );
 }

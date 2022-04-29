@@ -1,30 +1,24 @@
 import { Button } from "react-bootstrap"
 import { useState, useContext, useEffect } from 'react'
 import { MenuContext } from '../../context/menuContext'
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const AddtoMenuBtn = ({ item }) => {
     let navigate = useNavigate();
-    const [isNonVeganFull, setIsNonVeganFull] = useState(false);
-    const [isVeganFull, setIsVeganFull] = useState(false);
-    const [disabled, setDisabled] = useState(false);
     const { vegan } = item;
+    const [disabled, setDisabled] = useState(false);
     const { addToMenu, veganCounter, otherCounter } = useContext(MenuContext);
     const MySwal = withReactContent(Swal);
-
     useEffect(() => {
         let mounted = true;
         if (mounted) {
-            console.log(vegan, veganCounter);
             if (vegan) {
-                setDisabled(vegan && veganCounter && true)
+                setDisabled(veganCounter)
             }
             else {
-                setDisabled(!vegan && otherCounter & true)
+                setDisabled(otherCounter)
             }
-
-
         }
         return function cleanup() {
             mounted = false
@@ -57,12 +51,14 @@ const AddtoMenuBtn = ({ item }) => {
             <Button onClick={() => addMenu(item)} disabled={disabled && true} >
                 Add to menu
             </Button>
-            <div className="pt-3 d-flex">
-                <p className="alert alert-primary p-2" role="alert">
-                    {!vegan && disabled && 'Only 2 non-vegan recipes per menu.'}
-                    {vegan && disabled && 'Only 2 vegan recipes per menu. '}
-                </p>
-            </div >
+            {disabled && true && (
+                <div className="pt-3 d-flex">
+                    <p className="alert alert-primary p-2" role="alert">
+                        {!vegan && true && 'Only 2 non-vegan recipes per menu.'}
+                        {vegan && true && 'Only 2 vegan recipes per menu. '}
+                    </p>
+                </div >
+            )}
         </>
     )
 }

@@ -1,8 +1,9 @@
+import env from "react-dotenv";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ItemDetail from "./ItemDetail";
 import Loader from "../Loader/Loader";
-
+import roundPrice from '../../utils/roundPrice.util';
 const ItemDetailContainer = ({ id }) => {
     const [item, setItem] = useState({});
     const [loading, setLoading] = useState(true)
@@ -10,11 +11,18 @@ const ItemDetailContainer = ({ id }) => {
         let mounted = true;
         if (mounted) {
 
-            axios.get(`https://api.spoonacular.com/recipes/${id}/information?&apiKey=4926cbbf15ee43678820303661e20f94`)
-                .then(({ data }) => setItem(data))
+            axios.get(`https://api.spoonacular.com/recipes/${id}/information?&apiKey=${env.API_KEY}`)
+                .then(({ data }) => {
+                    setItem(
+                        {
+                            ...data,
+                            pricePerServing: roundPrice(data.pricePerServing)
+                        }
+                    )
+                }
+                )
                 .catch(err => console.log(err))
                 .then(() => setLoading(false))
-
         }
         return function cleanup() {
             mounted = false
@@ -22,13 +30,13 @@ const ItemDetailContainer = ({ id }) => {
     }, [id])
 
     return (
-        <div>  {loading ? (<Loader />
-        ) : (
-
-            <ItemDetail item={item} />
-        )
-        }
-        </div>
+        <>
+            {loading && true ?
+                (<Loader />)
+                :
+                (<ItemDetail item={item} />)
+            }
+        </>
     )
 }
 

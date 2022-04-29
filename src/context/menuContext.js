@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import roundPrice from "../utils/roundPrice.util";
+
 export const MenuContext = createContext();
 
 export const MenuProvider = (props) => {
@@ -21,8 +21,7 @@ export const MenuProvider = (props) => {
     }, [menu]);
 
     const addToMenu = (item) => {
-        const priceRounded = roundPrice(item.pricePerServing)
-        setMenu([...menu, { ...item, pricePerServing: priceRounded }])
+        setMenu([...menu, { ...item }])
     }
     const clearMenu = () => {
         setMenu([]);
@@ -40,22 +39,6 @@ export const MenuProvider = (props) => {
         setMenu([...tempMenu])
     }
 
-    /*    const addToCart = (item, quantity) => {
-           let temp = cart;
-     
-           const isInCartIndex = itemId => {
-               return cart.indexOf(cart.find(({ item: itemCart }) => itemCart.id === itemId))
-           };
-     
-           if (isInCartIndex(item.id) !== -1) {
-               temp[isInCartIndex(item.id)].quantity += quantity;
-           }
-           else {
-               temp.push({ item, quantity });
-           }
-           setCart([...temp])
-       } */
-
     const menuTotal = () =>
         (menu.map((item) => item.pricePerServing))
             .reduce(((acc, value) => { return acc + value }), 0)
@@ -65,12 +48,16 @@ export const MenuProvider = (props) => {
             .reduce(((acc, value) => { return acc + value }), 0)
         return Number.parseInt(healthScoreTotal / menu.length);
     }
-
+    const averageMinutesReady = () => {
+        const minutes = menu.map(item => item.readyInMinutes);
+        const averageMinutesTotal = Math.max(...minutes)
+        return Number.parseInt(averageMinutesTotal);
+    }
     const menuAmount = () => menu.length
 
 
     return (
-        <MenuContext.Provider value={{ isMenuFull, clearMenu, menuHealthy, addToMenu, deleteFromMenu, menu, menuTotal, menuAmount, veganCounter, otherCounter }}>
+        <MenuContext.Provider value={{ averageMinutesReady, isMenuFull, clearMenu, menuHealthy, addToMenu, deleteFromMenu, menu, menuTotal, menuAmount, veganCounter, otherCounter }}>
             {props.children}
         </MenuContext.Provider>
     )

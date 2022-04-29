@@ -16,7 +16,7 @@ const NavBar = () => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
                             <NavLink className='nav-link' to='/'>Home</NavLink>
-                            <NavLink className='nav-link' to='/search'>Buscador</NavLink>
+                            <NavLink className='nav-link' to='/search'>Search</NavLink>
                         </Nav>
                         <Nav className="me-end">
                             <Button className="btn btn-success btn-outline-light" onClick={() => { deleteToken(); window.location.reload() }}> Logout</Button>
