@@ -6,7 +6,6 @@ export const MenuProvider = (props) => {
     const [menu, setMenu] = useState([]);
     const [veganCounter, setVeganCounter] = useState(false);
     const [otherCounter, setOtherCounter] = useState(false);
-    const [isMenuFull, setIsMenuFull] = useState(false);
 
     useEffect(() => {
         let mounted = true;
@@ -57,7 +56,7 @@ export const MenuProvider = (props) => {
 
 
     return (
-        <MenuContext.Provider value={{ averageMinutesReady, isMenuFull, clearMenu, menuHealthy, addToMenu, deleteFromMenu, menu, menuTotal, menuAmount, veganCounter, otherCounter }}>
+        <MenuContext.Provider value={{ averageMinutesReady, clearMenu, menuHealthy, addToMenu, deleteFromMenu, menu, menuTotal, menuAmount, veganCounter, otherCounter }}>
             {props.children}
         </MenuContext.Provider>
     )

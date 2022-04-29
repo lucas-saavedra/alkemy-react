@@ -42,10 +42,9 @@ const Login = ({ setToken }) => {
         }
     }
     return (
-
-        <Container fluid className="bg-success text-dark bg-opacity-50">
-            <div style={{ height: '100vh' }}>
-                <Row className="">
+        <div style={{ height: '100vh' }} className="bg-success text-dark bg-opacity-50">
+            <Container >
+                <Row >
                     <div className="col-md-6 d-flex justify-content-center pt-3">
                         <Image height={300} src="https://spoonacular.com/images/spoonacular-logo-b.svg"></Image>
                     </div>
@@ -86,9 +85,8 @@ const Login = ({ setToken }) => {
                         </Form>
                     </div>
                 </Row>
-            </div>
-        </Container >
-
+            </Container >
+        </div>
     )
 }
 export default Login
